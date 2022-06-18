@@ -1,0 +1,8 @@
+services:
+    SoonBundle\:
+        resource: '../src/'
+        autowire: true
+        autoconfigure: true
+        exclude:
+            - '../src/DependencyInjection/'
+            - '../src/Entity/'

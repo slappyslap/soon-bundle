@@ -1,0 +1,120 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+
+    <link rel=stylesheet href=https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css
+          integrity=sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO crossorigin=anonymous>
+    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel=stylesheet>
+    <link href="https://fonts.googleapis.com/css2?family=Muli:wght@300;700&display=swap" rel=stylesheet>
+    <link rel=stylesheet href="https://fonts.googleapis.com/css?family=Roboto&display=swap">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css"
+          integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g=="
+          crossorigin="anonymous" referrerpolicy="no-referrer"/>
+    <style>
+        html {
+            height: 100%;
+            padding: 0;
+            font-family: "Muli", sans-serif;
+        }
+
+        body {
+            background-image: url({{ asset(background ?: 'bundles/soon/background.jpg') }});
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-size: 100% 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+            color: {{ color ?: 'white' }};
+        }
+
+        h1 {
+            margin-top: 25px;
+            font-size: 60px;
+            font-weight: 400;
+            text-transform: uppercase;
+        }
+
+        p.description {
+            font-size: 20px;
+            margin-top: 10px;
+            margin-bottom: 30px;
+            font-style: italic;
+        }
+
+        .main {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+        }
+
+        .links {
+            margin-top: 20px;
+        }
+
+        .links a {
+            background-color: #444;
+            border-radius: 1px;
+            color: white;
+            text-decoration: none;
+        }
+
+        .logo {
+            max-width: 20%;
+        }
+    </style>
+</head>
+<body>
+<div class="main">
+    {% if logo %}
+        <img src="{{ asset(logo) }}" alt="" class="logo">
+    {% endif %}
+    <div class="content">
+        <h1>{{ title ?: "Coming soon" | trans }}</h1>
+        <p>{{ description ?: "Stay tuned for something amazing" | trans }}</p>
+        <h2 id="countDown" data-release-date="{{ release_date | date }}" data-day-text="{{ "days" | trans }}"></h2>
+    </div>
+    <div class="links">
+        {% for name, config in socials %}
+            <a class="btn btn-lg" href="{{ config.link }}"><i class="{{ config.icon }}"></i></a>
+        {% endfor %}
+    </div>
+
+</div>
+<script>
+    let countDown = document.querySelector("#countDown");
+    let releaseDate = new Date(countDown.dataset.releaseDate).getTime();
+
+    console.log(countDown.dataset)
+
+    let countDownFunction = () => {
+        let now = new Date().getTime()
+
+        let distance = releaseDate - now;
+
+        let days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        let hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        let minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        let seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        if (distance < 0) {
+            clearInterval(x);
+            countDown.innerHTML = "RELEASED";
+            return;
+        }
+        countDown.innerHTML = days + " " + countDown.dataset.dayText + " " + hours + "h " + minutes + "m " + seconds + "s ";
+    }
+    setInterval(countDownFunction, 1000);
+    countDownFunction();
+</script>
+</body>
+</html>

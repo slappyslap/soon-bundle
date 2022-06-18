@@ -1,6 +1,9 @@
 {
     "name": "slappyslap/soon-bundle",
-    "license": ["MIT"],
+    "type": "symfony-bundle",
+    "license": [
+        "MIT"
+    ],
     "authors": [
         {
             "name": "Maxime Badin",
