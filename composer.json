@@ -1,8 +1,11 @@
 {
     "name": "slappyslap/soon-bundle",
+    "license": ["MIT"],
     "authors": [
         {
-            "name": "Maxime Badin"
+            "name": "Maxime Badin",
+            "homepage": "https://maximebadin.me",
+            "role": "Developer"
         }
     ],
     "require": {
