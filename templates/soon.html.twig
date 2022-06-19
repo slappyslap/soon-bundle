@@ -5,7 +5,7 @@
     <meta name="viewport"
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>{{ title ?: "Coming soon" | trans }}</title>
 
     <link rel=stylesheet href=https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css
           integrity=sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO crossorigin=anonymous>
@@ -81,7 +81,9 @@
     <div class="content">
         <h1>{{ title ?: "Coming soon" | trans }}</h1>
         <p>{{ description ?: "Stay tuned for something amazing" | trans }}</p>
-        <h2 id="countDown" data-release-date="{{ release_date | date }}" data-day-text="{{ "days" | trans }}"></h2>
+        {% if release_date %}
+            <h2 id="countDown" data-release-date="{{ release_date | date }}" data-day-text="{{ "days" | trans }}"></h2>
+        {% endif %}
     </div>
     <div class="links">
         {% for name, config in socials %}
@@ -93,8 +95,6 @@
 <script>
     let countDown = document.querySelector("#countDown");
     let releaseDate = new Date(countDown.dataset.releaseDate).getTime();
-
-    console.log(countDown.dataset)
 
     let countDownFunction = () => {
         let now = new Date().getTime()
@@ -113,8 +113,11 @@
         }
         countDown.innerHTML = days + " " + countDown.dataset.dayText + " " + hours + "h " + minutes + "m " + seconds + "s ";
     }
-    setInterval(countDownFunction, 1000);
-    countDownFunction();
+
+    if (releaseDate) {
+        setInterval(countDownFunction, 1000);
+        countDownFunction();
+    }
 </script>
 </body>
 </html>
